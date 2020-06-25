@@ -72,6 +72,18 @@ func updateFood(id int64, item *models.Food) error {
 	return nil
 }
 
+func deleteFood(foodId int64) error {
+	itemsLock.Lock()
+	defer itemsLock.Unlock()
+
+	_, exists := dummyFoodSource[foodId]
+	if !exists {
+		return errors.New("Food not found")
+	}
+	delete(dummyFoodSource, foodId)
+	return nil
+}
+
 func main() {
 	// load embedded swagger spec from a JSON file
 	swaggerSpec, err := loads.Analyzed(restapi.SwaggerJSON, "")
@@ -124,6 +136,16 @@ func main() {
 			}
 			return foods.NewUpdateFoodOK().WithPayload(params.Body)
 		})
+
+	// implements deleteFood
+	api.FoodsDeleteFoodHandler = foods.DeleteFoodHandlerFunc(
+		func(params foods.DeleteFoodParams) middleware.Responder {
+			if err := deleteFood(params.FoodID); err != nil {
+				return foods.NewDeleteFoodNoContent()
+			}
+			return foods.NewDeleteFoodNoContent()
+		})
+
 	// serve
 	if err := server.Serve(); err != nil {
 		log.Fatalln(err)

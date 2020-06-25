@@ -135,6 +135,17 @@ func init() {
           }
         }
       },
+      "delete": {
+        "tags": [
+          "foods"
+        ],
+        "operationId": "deleteFood",
+        "responses": {
+          "204": {
+            "description": "delete a food"
+          }
+        }
+      },
       "parameters": [
         {
           "type": "integer",
@@ -290,6 +301,17 @@ func init() {
             "schema": {
               "$ref": "#/definitions/food"
             }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "foods"
+        ],
+        "operationId": "deleteFood",
+        "responses": {
+          "204": {
+            "description": "delete a food"
           }
         }
       },

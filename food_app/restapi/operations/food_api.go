@@ -51,6 +51,9 @@ func NewFoodAPI(spec *loads.Document) *FoodAPI {
 		FoodsAddFoodHandler: foods.AddFoodHandlerFunc(func(params foods.AddFoodParams) middleware.Responder {
 			return middleware.NotImplemented("operation foods.AddFood has not yet been implemented")
 		}),
+		FoodsDeleteFoodHandler: foods.DeleteFoodHandlerFunc(func(params foods.DeleteFoodParams) middleware.Responder {
+			return middleware.NotImplemented("operation foods.DeleteFood has not yet been implemented")
+		}),
 		FoodsGetFoodsHandler: foods.GetFoodsHandlerFunc(func(params foods.GetFoodsParams) middleware.Responder {
 			return middleware.NotImplemented("operation foods.GetFoods has not yet been implemented")
 		}),
@@ -97,6 +100,8 @@ type FoodAPI struct {
 	SampleDescriptionShowGreetingsToTheAPIHandler sample_description.ShowGreetingsToTheAPIHandler
 	// FoodsAddFoodHandler sets the operation handler for the add food operation
 	FoodsAddFoodHandler foods.AddFoodHandler
+	// FoodsDeleteFoodHandler sets the operation handler for the delete food operation
+	FoodsDeleteFoodHandler foods.DeleteFoodHandler
 	// FoodsGetFoodsHandler sets the operation handler for the get foods operation
 	FoodsGetFoodsHandler foods.GetFoodsHandler
 	// FoodsUpdateFoodHandler sets the operation handler for the update food operation
@@ -175,6 +180,9 @@ func (o *FoodAPI) Validate() error {
 	}
 	if o.FoodsAddFoodHandler == nil {
 		unregistered = append(unregistered, "foods.AddFoodHandler")
+	}
+	if o.FoodsDeleteFoodHandler == nil {
+		unregistered = append(unregistered, "foods.DeleteFoodHandler")
 	}
 	if o.FoodsGetFoodsHandler == nil {
 		unregistered = append(unregistered, "foods.GetFoodsHandler")
@@ -280,6 +288,10 @@ func (o *FoodAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/food"] = foods.NewAddFood(o.context, o.FoodsAddFoodHandler)
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/food/{food_id}"] = foods.NewDeleteFood(o.context, o.FoodsDeleteFoodHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
