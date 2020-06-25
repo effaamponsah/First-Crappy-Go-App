@@ -151,7 +151,8 @@ func init() {
       "type": "object",
       "required": [
         "name",
-        "price"
+        "price",
+        "available"
       ],
       "properties": {
         "available": {
@@ -308,7 +309,8 @@ func init() {
       "type": "object",
       "required": [
         "name",
-        "price"
+        "price",
+        "available"
       ],
       "properties": {
         "available": {

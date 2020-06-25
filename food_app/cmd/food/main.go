@@ -54,6 +54,24 @@ func addItem(item *models.Food) error {
 	return nil
 }
 
+func updateFood(id int64, item *models.Food) error {
+	if item == nil {
+		return errors.New("item must be present")
+	}
+
+	itemsLock.Lock()
+	defer itemsLock.Unlock()
+
+	_, exists := dummyFoodSource[id]
+	if !exists {
+		return errors.New("not found: item %d")
+	}
+
+	item.FoodID = id
+	dummyFoodSource[id] = item
+	return nil
+}
+
 func main() {
 	// load embedded swagger spec from a JSON file
 	swaggerSpec, err := loads.Analyzed(restapi.SwaggerJSON, "")
@@ -96,6 +114,15 @@ func main() {
 				return foods.NewGetFoodsOK()
 			}
 			return foods.NewAddFoodCreated().WithPayload(params.Body)
+		})
+
+	// implements updatefood
+	api.FoodsUpdateFoodHandler = foods.UpdateFoodHandlerFunc(
+		func(params foods.UpdateFoodParams) middleware.Responder {
+			if err := updateFood(params.FoodID, params.Body); err != nil {
+				return foods.NewUpdateFoodOK()
+			}
+			return foods.NewUpdateFoodOK().WithPayload(params.Body)
 		})
 	// serve
 	if err := server.Serve(); err != nil {

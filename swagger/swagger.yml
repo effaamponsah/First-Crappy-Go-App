@@ -89,6 +89,7 @@ definitions:
     required:
       - name
       - price
+      - available
     properties:
       food_id:
         type: integer

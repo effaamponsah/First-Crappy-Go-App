@@ -18,7 +18,8 @@ import (
 type Food struct {
 
 	// available
-	Available bool `json:"available,omitempty"`
+	// Required: true
+	Available *bool `json:"available"`
 
 	// food id
 	// Read Only: true
@@ -38,6 +39,10 @@ type Food struct {
 func (m *Food) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateAvailable(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateName(formats); err != nil {
 		res = append(res, err)
 	}
@@ -49,6 +54,15 @@ func (m *Food) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *Food) validateAvailable(formats strfmt.Registry) error {
+
+	if err := validate.Required("available", "body", m.Available); err != nil {
+		return err
+	}
+
 	return nil
 }
 
