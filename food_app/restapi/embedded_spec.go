@@ -86,6 +86,29 @@ func init() {
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "foods"
+        ],
+        "operationId": "addFood",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/food"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "create a food",
+            "schema": {
+              "$ref": "#/definitions/food"
+            }
+          }
+        }
       }
     }
   },
@@ -183,6 +206,29 @@ func init() {
               "items": {
                 "$ref": "#/definitions/food"
               }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "foods"
+        ],
+        "operationId": "addFood",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/food"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "create a food",
+            "schema": {
+              "$ref": "#/definitions/food"
             }
           }
         }

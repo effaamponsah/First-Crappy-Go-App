@@ -1,11 +1,14 @@
 package main
 
 import (
+	"errors"
 	"food_app/food_app/models"
 	"food_app/food_app/restapi"
 	"food_app/food_app/restapi/operations"
 	"food_app/food_app/restapi/operations/foods"
 	"food_app/food_app/restapi/operations/sample_description"
+	"sync"
+	"sync/atomic"
 
 	"log"
 
@@ -15,6 +18,7 @@ import (
 )
 
 var dummyFoodSource = make(map[int64]*models.Food)
+var itemsLock = &sync.Mutex{}
 
 func allItems(since int64, limit int32) (result []*models.Food) {
 	result = make([]*models.Food, 0)
@@ -27,6 +31,27 @@ func allItems(since int64, limit int32) (result []*models.Food) {
 		}
 	}
 	return
+}
+
+var lastID int64
+
+func newItemID() int64 {
+	return atomic.AddInt64(&lastID, 1)
+}
+
+func addItem(item *models.Food) error {
+	if item == nil {
+		return errors.New("item must be present")
+	}
+
+	itemsLock.Lock()
+	defer itemsLock.Unlock()
+
+	newID := newItemID()
+	item.FoodID = newID
+	dummyFoodSource[newID] = item
+
+	return nil
 }
 
 func main() {
@@ -62,6 +87,15 @@ func main() {
 				mergedParams.Limit = parameters.Limit
 			}
 			return foods.NewGetFoodsOK().WithPayload(allItems(*mergedParams.Since, *mergedParams.Limit))
+		})
+
+	// Implement addFood
+	api.FoodsAddFoodHandler = foods.AddFoodHandlerFunc(
+		func(params foods.AddFoodParams) middleware.Responder {
+			if err := addItem(params.Body); err != nil {
+				return foods.NewGetFoodsOK()
+			}
+			return foods.NewAddFoodCreated().WithPayload(params.Body)
 		})
 	// serve
 	if err := server.Serve(); err != nil {

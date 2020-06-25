@@ -48,6 +48,9 @@ func NewFoodAPI(spec *loads.Document) *FoodAPI {
 		SampleDescriptionShowGreetingsToTheAPIHandler: sample_description.ShowGreetingsToTheAPIHandlerFunc(func(params sample_description.ShowGreetingsToTheAPIParams) middleware.Responder {
 			return middleware.NotImplemented("operation sample_description.ShowGreetingsToTheAPI has not yet been implemented")
 		}),
+		FoodsAddFoodHandler: foods.AddFoodHandlerFunc(func(params foods.AddFoodParams) middleware.Responder {
+			return middleware.NotImplemented("operation foods.AddFood has not yet been implemented")
+		}),
 		FoodsGetFoodsHandler: foods.GetFoodsHandlerFunc(func(params foods.GetFoodsParams) middleware.Responder {
 			return middleware.NotImplemented("operation foods.GetFoods has not yet been implemented")
 		}),
@@ -89,6 +92,8 @@ type FoodAPI struct {
 
 	// SampleDescriptionShowGreetingsToTheAPIHandler sets the operation handler for the show greetings to the api operation
 	SampleDescriptionShowGreetingsToTheAPIHandler sample_description.ShowGreetingsToTheAPIHandler
+	// FoodsAddFoodHandler sets the operation handler for the add food operation
+	FoodsAddFoodHandler foods.AddFoodHandler
 	// FoodsGetFoodsHandler sets the operation handler for the get foods operation
 	FoodsGetFoodsHandler foods.GetFoodsHandler
 	// ServeError is called when an error is received, there is a default handler
@@ -162,6 +167,9 @@ func (o *FoodAPI) Validate() error {
 
 	if o.SampleDescriptionShowGreetingsToTheAPIHandler == nil {
 		unregistered = append(unregistered, "sample_description.ShowGreetingsToTheAPIHandler")
+	}
+	if o.FoodsAddFoodHandler == nil {
+		unregistered = append(unregistered, "foods.AddFoodHandler")
 	}
 	if o.FoodsGetFoodsHandler == nil {
 		unregistered = append(unregistered, "foods.GetFoodsHandler")
@@ -260,6 +268,10 @@ func (o *FoodAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"][""] = sample_description.NewShowGreetingsToTheAPI(o.context, o.SampleDescriptionShowGreetingsToTheAPIHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/food"] = foods.NewAddFood(o.context, o.FoodsAddFoodHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
