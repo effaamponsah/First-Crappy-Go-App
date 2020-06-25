@@ -1,15 +1,15 @@
 package main
 
 import (
-	"flag"
 	"food_app/food_app/restapi"
 	"food_app/food_app/restapi/operations"
+	"food_app/food_app/restapi/operations/sample_description"
+
 	"log"
 
 	"github.com/go-openapi/loads"
+	"github.com/go-openapi/runtime/middleware"
 )
-
-// var port = flag.Int("port", 5000, "The server port")
 
 func main() {
 	// load embedded swagger spec from a JSON file
@@ -23,10 +23,14 @@ func main() {
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
-	// parse flags
-	flag.Parse()
 	// set port
 	server.Port = 3000
+
+	// Implement base route
+	api.SampleDescriptionShowGreetingsToTheAPIHandler = sample_description.ShowGreetingsToTheAPIHandlerFunc(
+		func(param sample_description.ShowGreetingsToTheAPIParams) middleware.Responder {
+			return sample_description.NewShowGreetingsToTheAPIOK()
+		})
 
 	// serve
 	if err := server.Serve(); err != nil {
