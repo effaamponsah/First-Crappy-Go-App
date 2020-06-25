@@ -1,4 +1,4 @@
-module effaamponsah/food
+module food_app
 
 go 1.14
 
