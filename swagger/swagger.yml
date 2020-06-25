@@ -18,8 +18,41 @@ paths:
           schema:
             type: string
             description: consumes actual greetings
+
+  /food:
+    get:
+      tags:
+        - foods
+      operationId: getFoods
+      responses:
+        200:
+          description: list all foods
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/food"
+
 produces:
   - application/json
 schemes:
   - http
 swagger: "2.0"
+definitions:
+  food:
+    type: object
+    required:
+      - name
+      - price
+    properties:
+      food_id:
+        type: integer
+        format: int64
+        readOnly: true
+      name:
+        type: string
+        minLength: 1
+      price:
+        type: number
+        format: float
+      available:
+        type: boolean

@@ -53,6 +53,52 @@ func init() {
           }
         }
       }
+    },
+    "/food": {
+      "get": {
+        "tags": [
+          "foods"
+        ],
+        "operationId": "getFoods",
+        "responses": {
+          "200": {
+            "description": "list all foods",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/food"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "food": {
+      "type": "object",
+      "required": [
+        "name",
+        "price"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "food_id": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        }
+      }
     }
   }
 }`))
@@ -90,6 +136,52 @@ func init() {
               "type": "string"
             }
           }
+        }
+      }
+    },
+    "/food": {
+      "get": {
+        "tags": [
+          "foods"
+        ],
+        "operationId": "getFoods",
+        "responses": {
+          "200": {
+            "description": "list all foods",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/food"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "food": {
+      "type": "object",
+      "required": [
+        "name",
+        "price"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "food_id": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
         }
       }
     }
