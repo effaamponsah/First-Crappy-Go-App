@@ -1,0 +1,12 @@
+consumes:
+- application/json
+info:
+  description: First Go app with swagger
+  title: A simple food odering app
+  version: 1.0.0
+paths: {}
+produces:
+- application/json
+schemes:
+- http
+swagger: "2.0"
