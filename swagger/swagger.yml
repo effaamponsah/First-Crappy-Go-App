@@ -1,12 +1,25 @@
 consumes:
-- application/json
+  - application/json
 info:
   description: First Go app with swagger
   title: A simple food odering app
   version: 1.0.0
-paths: {}
+paths:
+  /:
+    get:
+      produces:
+        - text/plain
+      tags: #a simple tag for route
+        - Sample description
+      operationId: Show greetings to the api #simple description to use in the doc
+      responses:
+        200:
+          description: returns greetings to the API
+          schema:
+            type: string
+            description: consumes actual greetings
 produces:
-- application/json
+  - application/json
 schemes:
-- http
+  - http
 swagger: "2.0"
