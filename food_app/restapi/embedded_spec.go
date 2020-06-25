@@ -60,6 +60,21 @@ func init() {
           "foods"
         ],
         "operationId": "getFoods",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "list all foods",
@@ -145,6 +160,21 @@ func init() {
           "foods"
         ],
         "operationId": "getFoods",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "list all foods",
