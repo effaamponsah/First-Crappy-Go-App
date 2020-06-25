@@ -110,6 +110,40 @@ func init() {
           }
         }
       }
+    },
+    "/food/{food_id}": {
+      "put": {
+        "tags": [
+          "foods"
+        ],
+        "operationId": "updateFood",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/food"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "update a food",
+            "schema": {
+              "$ref": "#/definitions/food"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "integer",
+          "format": "int64",
+          "name": "food_id",
+          "in": "path",
+          "required": true
+        }
+      ]
     }
   },
   "definitions": {
@@ -233,6 +267,40 @@ func init() {
           }
         }
       }
+    },
+    "/food/{food_id}": {
+      "put": {
+        "tags": [
+          "foods"
+        ],
+        "operationId": "updateFood",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/food"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "update a food",
+            "schema": {
+              "$ref": "#/definitions/food"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "integer",
+          "format": "int64",
+          "name": "food_id",
+          "in": "path",
+          "required": true
+        }
+      ]
     }
   },
   "definitions": {

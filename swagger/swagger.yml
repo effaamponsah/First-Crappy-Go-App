@@ -56,6 +56,28 @@ paths:
           schema:
             $ref: "#/definitions/food"
 
+  /food/{food_id}:
+    parameters:
+      - type: integer
+        format: int64
+        name: food_id
+        in: path
+        required: true
+    put:
+      tags:
+        - foods
+      operationId: updateFood
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/food"
+      responses:
+        200:
+          description: update a food
+          schema:
+            $ref: "#/definitions/food"
+
 produces:
   - application/json
 schemes:

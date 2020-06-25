@@ -54,6 +54,9 @@ func NewFoodAPI(spec *loads.Document) *FoodAPI {
 		FoodsGetFoodsHandler: foods.GetFoodsHandlerFunc(func(params foods.GetFoodsParams) middleware.Responder {
 			return middleware.NotImplemented("operation foods.GetFoods has not yet been implemented")
 		}),
+		FoodsUpdateFoodHandler: foods.UpdateFoodHandlerFunc(func(params foods.UpdateFoodParams) middleware.Responder {
+			return middleware.NotImplemented("operation foods.UpdateFood has not yet been implemented")
+		}),
 	}
 }
 
@@ -96,6 +99,8 @@ type FoodAPI struct {
 	FoodsAddFoodHandler foods.AddFoodHandler
 	// FoodsGetFoodsHandler sets the operation handler for the get foods operation
 	FoodsGetFoodsHandler foods.GetFoodsHandler
+	// FoodsUpdateFoodHandler sets the operation handler for the update food operation
+	FoodsUpdateFoodHandler foods.UpdateFoodHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -173,6 +178,9 @@ func (o *FoodAPI) Validate() error {
 	}
 	if o.FoodsGetFoodsHandler == nil {
 		unregistered = append(unregistered, "foods.GetFoodsHandler")
+	}
+	if o.FoodsUpdateFoodHandler == nil {
+		unregistered = append(unregistered, "foods.UpdateFoodHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -276,6 +284,10 @@ func (o *FoodAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/food"] = foods.NewGetFoods(o.context, o.FoodsGetFoodsHandler)
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/food/{food_id}"] = foods.NewUpdateFood(o.context, o.FoodsUpdateFoodHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
