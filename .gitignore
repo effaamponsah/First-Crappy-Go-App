@@ -1,5 +1,3 @@
 .vscode/
 
-food_app/models
-
-food_app/restapi
+food_app/models/
