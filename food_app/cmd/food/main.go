@@ -123,6 +123,7 @@ func main() {
 	api.FoodsAddFoodHandler = foods.AddFoodHandlerFunc(
 		func(params foods.AddFoodParams) middleware.Responder {
 			if err := addItem(params.Body); err != nil {
+				// throw some error here
 				return foods.NewGetFoodsOK()
 			}
 			return foods.NewAddFoodCreated().WithPayload(params.Body)
